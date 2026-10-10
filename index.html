@@ -1,0 +1,1726 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+    <meta name="theme-color" content="#0B0D10">
+    <title>Takrar – Civic Complaint Portal</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: dark;
+            --bg: #0B0D10;
+            --bg2: #11151A;
+            --side: #0E1116;
+            --s: #161B22;
+            --el: #1C232C;
+            --inp: #101419;
+            --b: #2A323D;
+            --t: #F5F0EA;
+            --m: #A8A29E;
+            --lab: #D6D3D1;
+            --head: #FFF7ED;
+            --link: #FDBA74;
+            --p: #EF4444;
+            --p2: #F87171;
+            --pl: #1C232C;
+            --g: #22C55E;
+            --o: #F97316;
+            --bl: #EF4444;
+            --r: #EF4444;
+            --rbg: #35191D;
+            --obg: #382619;
+            --gbg: #153323;
+            --nav: 68px;
+            --sab: env(safe-area-inset-bottom, 0px);
+            --sat: env(safe-area-inset-top, 0px);
+            --fh: 'Sora', 'Roboto', system-ui, sans-serif;
+            --fb: 'Figtree', 'Roboto', system-ui, sans-serif;
+            --sh: 0 8px 24px rgba(0, 0, 0, .35);
+            --sh2: 0 14px 36px rgba(0, 0, 0, .55);
+            --ease: cubic-bezier(.22, 1, .36, 1)
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%
+        }
+
+        body {
+            margin: 0;
+            font: 15px/1.55 var(--fb);
+            background: var(--bg);
+            color: var(--t);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            touch-action: manipulation
+        }
+
+        h1,
+        h2,
+        h3,
+        .logo {
+            font-family: var(--fh);
+            margin: 0;
+            color: var(--head);
+            letter-spacing: -.01em
+        }
+
+        a {
+            color: var(--link)
+        }
+
+        a:hover {
+            color: #FED7AA
+        }
+
+        ::selection {
+            background: rgba(239, 68, 68, .35)
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--p2);
+            outline-offset: 2px
+        }
+
+        /* ================= NAV: bottom bar on phones, rail on larger screens ================= */
+        aside {
+            position: fixed;
+            inset: auto 0 0 0;
+            height: calc(var(--nav) + var(--sab));
+            padding: 0 6px var(--sab);
+            display: flex;
+            flex-direction: row;
+            align-items: stretch;
+            gap: 0;
+            background: rgba(14, 17, 22, .95);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            border-top: 1px solid var(--b);
+            z-index: 30;
+            overflow-x: auto;
+            scrollbar-width: none
+        }
+
+        aside::-webkit-scrollbar {
+            display: none
+        }
+
+        .logo {
+            display: none
+        }
+
+        aside a.nav {
+            position: relative;
+            flex: 1 0 58px;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 4px;
+            padding: 0 2px 6px;
+            color: var(--m);
+            text-decoration: none;
+            font: 600 10.5px/1.15 var(--fb);
+            text-align: center;
+            hyphens: auto;
+            overflow-wrap: break-word;
+            transition: color .2s
+        }
+
+        aside a.nav::before {
+            content: '';
+            position: relative;
+            z-index: 1;
+            flex: none;
+            width: 24px;
+            height: 24px;
+            margin-top: 11px;
+            background: currentColor;
+            -webkit-mask: var(--ic) center/contain no-repeat;
+            mask: var(--ic) center/contain no-repeat
+        }
+
+        aside a.nav::after {
+            content: '';
+            position: absolute;
+            top: 8px;
+            left: 50%;
+            width: calc(100% - 8px);
+            max-width: 58px;
+            height: 30px;
+            border-radius: 16px;
+            background: var(--rbg);
+            opacity: 0;
+            transform: translateX(-50%) scaleX(.4);
+            transition: opacity .2s, transform .3s var(--ease)
+        }
+
+        aside a.nav.on {
+            color: #FECACA
+        }
+
+        aside a.nav.on::after,
+        aside a.nav:active::after {
+            opacity: 1;
+            transform: translateX(-50%) scaleX(1)
+        }
+
+        aside a.nav[href="#/"] {
+            --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='14' y='3' width='7' height='7' rx='1.5'/%3E%3Crect x='3' y='14' width='7' height='7' rx='1.5'/%3E%3Crect x='14' y='14' width='7' height='7' rx='1.5'/%3E%3C/svg%3E")
+        }
+
+        aside a.nav[href="#/feed"] {
+            --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01'/%3E%3C/svg%3E")
+        }
+
+        aside a.nav[href="#/report"] {
+            --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 8v8M8 12h8'/%3E%3C/svg%3E")
+        }
+
+        aside a.nav[href="#/performance"] {
+            --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M21 20H3'/%3E%3C/svg%3E")
+        }
+
+        aside a.nav[href="#/official"] {
+            --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z'/%3E%3C/svg%3E")
+        }
+
+        aside a.nav[href="#/admin"] {
+            --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0'/%3E%3Ccircle cx='16' cy='6' r='2'/%3E%3Ccircle cx='10' cy='12' r='2'/%3E%3Ccircle cx='18' cy='18' r='2'/%3E%3C/svg%3E")
+        }
+
+        aside a.nav[href="#/login"] {
+            --ic: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='8' r='4'/%3E%3Cpath d='M4 21c0-4 4-6 8-6s8 2 8 6'/%3E%3C/svg%3E")
+        }
+
+        @media(max-width:719px) {
+            aside:has(a.nav:nth-child(6)) a.nav:not(.on) {
+                font-size: 0;
+                gap: 0;
+                flex: 1 1 0
+            }
+
+            aside:has(a.nav:nth-child(6)) a.nav.on {
+                flex: 2.6 1 0
+            }
+
+            aside:has(a.nav:nth-child(6)) a.nav::after {
+                max-width: 96px
+            }
+        }
+
+        /* ================= APP BAR ================= */
+        .wrap {
+            margin: 0
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            padding-top: calc(10px + var(--sat));
+            min-height: 60px;
+            background: rgba(11, 13, 16, .92);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--b)
+        }
+
+        header::before {
+            content: '';
+            flex: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 12px;
+            background-color: var(--p);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 18h18M5 18v-5a7 7 0 0 1 14 0v5M12 6v12'/%3E%3C/svg%3E"), linear-gradient(135deg, #EF4444, #DC2626);
+            background-size: 20px, 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 4px 14px rgba(239, 68, 68, .35)
+        }
+
+        header h2 {
+            flex: 1;
+            min-width: 0;
+            font: 700 16.5px/1.2 var(--fb);
+            font-family: var(--fh);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden
+        }
+
+        header .burger {
+            display: none !important
+        }
+
+        header #hl {
+            order: 0;
+            font-size: 0;
+            line-height: 0;
+            padding: 0;
+            margin: 0;
+            border: 0;
+            background: none;
+            display: inline-flex;
+            align-items: center
+        }
+
+        header #hl .dot {
+            width: 11px;
+            height: 11px;
+            margin: 0
+        }
+
+        header #hl:has(.dot.bad) {
+            order: 9;
+            flex-basis: 100%;
+            font-size: 12.5px;
+            line-height: 1.4;
+            padding: 9px 12px;
+            border-radius: 14px;
+            background: var(--rbg);
+            color: #FCA5A5;
+            border: 1px solid rgba(239, 68, 68, .3);
+            overflow-wrap: anywhere
+        }
+
+        header #hl:has(.dot.bad) .dot {
+            margin-right: 8px;
+            flex: none
+        }
+
+        header>button.btn.sm {
+            font-size: 0;
+            width: 40px;
+            height: 40px;
+            min-height: 40px;
+            padding: 0;
+            border-radius: 50%;
+            background: var(--el);
+            flex: none
+        }
+
+        header>button.btn.sm::before {
+            content: '';
+            width: 20px;
+            height: 20px;
+            background: var(--t);
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12a9 9 0 1 1-3-6.7'/%3E%3Cpath d='M21 4v5h-5'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12a9 9 0 1 1-3-6.7'/%3E%3Cpath d='M21 4v5h-5'/%3E%3C/svg%3E") center/contain no-repeat
+        }
+
+        #acct {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px
+        }
+
+        #acct .btn.sm {
+            font-size: 0;
+            width: 40px;
+            min-height: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%
+        }
+
+        #acct .btn.sm::before {
+            content: '';
+            width: 19px;
+            height: 19px;
+            background: var(--t);
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9'/%3E%3C/svg%3E") center/contain no-repeat
+        }
+
+        #acct>.m {
+            font-size: 0;
+            display: inline-flex
+        }
+
+        #acct .tag {
+            font-size: 11px;
+            background: var(--rbg);
+            color: #FECACA;
+            border-color: rgba(239, 68, 68, .35)
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 16px 16px calc(var(--nav) + var(--sab) + 96px)
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--o);
+            display: inline-block;
+            margin-right: 7px
+        }
+
+        .dot.ok {
+            background: var(--g);
+            box-shadow: 0 0 0 3px rgba(34, 197, 94, .2);
+            padding: 0;
+            border: 0;
+            margin: 0 7px 0 0;
+            border-radius: 50%;
+            animation: none
+        }
+
+        .dot.bad {
+            background: var(--r);
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, .2)
+        }
+
+        /* ================= FAB ================= */
+        .fab {
+            display: none;
+            position: fixed;
+            right: 16px;
+            bottom: calc(var(--nav) + var(--sab) + 16px);
+            z-index: 25;
+            height: 56px;
+            padding: 0 22px 0 16px;
+            border-radius: 18px;
+            align-items: center;
+            gap: 10px;
+            background: linear-gradient(180deg, #EF4444, #DC2626);
+            color: #fff;
+            font: 700 15px var(--fb);
+            text-decoration: none;
+            box-shadow: 0 10px 24px rgba(239, 68, 68, .35), 0 2px 6px rgba(0, 0, 0, .4);
+            transition: transform .15s
+        }
+
+        .fab:hover {
+            color: #fff
+        }
+
+        .fab:active {
+            transform: scale(.95)
+        }
+
+        .fab::before {
+            content: '';
+            width: 22px;
+            height: 22px;
+            background: #fff;
+            -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 8v8M8 12h8'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 8v8M8 12h8'/%3E%3C/svg%3E") center/contain no-repeat
+        }
+
+        body:has(.hero) .fab,
+        body:has(#fl) .fab {
+            display: inline-flex
+        }
+
+        /* ================= BUTTONS ================= */
+        .btn {
+            border: 1px solid var(--b);
+            background: var(--el);
+            color: var(--t);
+            padding: 0 22px;
+            min-height: 46px;
+            border-radius: 99px;
+            font: 700 14.5px var(--fb);
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+            transition: background .2s, border-color .2s, transform .15s, box-shadow .2s, filter .15s;
+            user-select: none
+        }
+
+        .btn:hover {
+            border-color: #4a5565;
+            background: #242d38;
+            color: var(--t)
+        }
+
+        .btn:active {
+            transform: scale(.96);
+            filter: brightness(1.15)
+        }
+
+        .btn.pri {
+            background: linear-gradient(180deg, #EF4444, #DC2626);
+            border-color: transparent;
+            color: #fff;
+            box-shadow: 0 6px 16px rgba(239, 68, 68, .28)
+        }
+
+        .btn.pri:hover {
+            background: linear-gradient(180deg, #F25555, #E23232);
+            color: #fff
+        }
+
+        .btn.sm {
+            min-height: 36px;
+            padding: 0 15px;
+            font-size: 13px
+        }
+
+        .btn:disabled {
+            opacity: .55;
+            cursor: wait;
+            transform: none;
+            box-shadow: none
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            scrollbar-width: none;
+            padding-bottom: 2px
+        }
+
+        .tabs::-webkit-scrollbar {
+            display: none
+        }
+
+        .tabs .btn {
+            flex: none;
+            min-height: 40px;
+            font-size: 14px
+        }
+
+        .tabs .btn.on {
+            background: var(--rbg);
+            color: #FECACA;
+            border-color: rgba(239, 68, 68, .55)
+        }
+
+        /* ================= CARDS ================= */
+        .card {
+            background: var(--s);
+            border: 1px solid var(--b);
+            border-radius: 22px;
+            padding: 20px;
+            box-shadow: var(--sh)
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap
+        }
+
+        .grid {
+            display: grid;
+            gap: 12px;
+            grid-template-columns: 1fr
+        }
+
+        /* hero */
+        .hero {
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            gap: 14px;
+            margin-bottom: 18px;
+            padding: 26px 20px;
+            border-radius: 28px;
+            border: 1px solid var(--b);
+            background: radial-gradient(420px 220px at 100% -10%, rgba(239, 68, 68, .24), transparent 65%), radial-gradient(320px 180px at -5% 115%, rgba(249, 115, 22, .16), transparent 65%), linear-gradient(145deg, #0B0D10 0%, #1C232C 100%);
+            box-shadow: var(--sh2)
+        }
+
+        .hero::before {
+            content: 'NAGARSETU · CIVIC PORTAL';
+            justify-self: start;
+            font: 700 10.5px var(--fb);
+            letter-spacing: .14em;
+            color: #FDBA74;
+            background: var(--obg);
+            border: 1px solid rgba(249, 115, 22, .3);
+            padding: 5px 12px;
+            border-radius: 99px
+        }
+
+        .hero h1 {
+            font: 700 clamp(25px, 7.2vw, 40px)/1.15 var(--fh);
+            color: var(--head);
+            max-width: 620px
+        }
+
+        .hero p {
+            margin: 0;
+            color: #D6D3D1;
+            max-width: 520px
+        }
+
+        .hero .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 4px
+        }
+
+        .hero .btn {
+            border: 0
+        }
+
+        .hero .btn.pri {
+            grid-column: 1/-1;
+            min-height: 52px;
+            font-size: 16px;
+            border: 0
+        }
+
+        .hero .btn:not(.pri) {
+            background: transparent !important;
+            color: var(--t) !important;
+            border: 1px solid #3a4452 !important;
+            font-size: 13.5px;
+            padding: 0 10px
+        }
+
+        .hero .btn:not(.pri):hover {
+            border-color: var(--p) !important;
+            background: rgba(239, 68, 68, .08) !important
+        }
+
+        /* stats */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 18px
+        }
+
+        .stats>.card:first-child {
+            grid-column: 1/-1
+        }
+
+        .stat {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            column-gap: 12px;
+            align-items: center;
+            padding: 14px 16px;
+            border-radius: 20px
+        }
+
+        .stat::before {
+            content: '';
+            grid-row: 1/3;
+            width: 42px;
+            height: 42px;
+            border-radius: 14px;
+            background: #1C232C url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 20V10M10 20V4M16 20v-8M21 20H3'/%3E%3C/svg%3E") center/20px no-repeat;
+            border: 1px solid var(--b)
+        }
+
+        .stat:has(b[style*="--o"])::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F97316' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7v5l3 2'/%3E%3C/svg%3E");
+            background-color: var(--obg);
+            border-color: rgba(249, 115, 22, .3)
+        }
+
+        .stat:has(b[style*="--bl"])::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23EF4444' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M21 12a9 9 0 1 1-3-6.7'/%3E%3Cpath d='M21 4v5h-5'/%3E%3C/svg%3E");
+            background-color: var(--rbg);
+            border-color: rgba(239, 68, 68, .3)
+        }
+
+        .stat:has(b[style*="--g"])::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2322C55E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M8 12.5l3 3 5-6'/%3E%3C/svg%3E");
+            background-color: var(--gbg);
+            border-color: rgba(34, 197, 94, .3)
+        }
+
+        .stat b {
+            font: 700 26px/1 var(--fh);
+            display: block;
+            color: var(--head)
+        }
+
+        .stat small {
+            color: var(--m);
+            font-size: 12.5px;
+            align-self: start;
+            margin-top: 3px
+        }
+
+        /* complaint cards: list item on phones, tile on bigger screens */
+        .cc {
+            padding: 0;
+            overflow: hidden;
+            cursor: pointer;
+            display: grid;
+            grid-template-columns: 108px 1fr;
+            border-radius: 20px;
+            transition: border-color .2s, transform .2s var(--ease)
+        }
+
+        .cc:active {
+            transform: scale(.985);
+            border-color: rgba(239, 68, 68, .5)
+        }
+
+        .cc>img,
+        .cc>.ph {
+            width: 108px;
+            height: 100%;
+            min-height: 136px;
+            object-fit: cover;
+            background: var(--el);
+            display: block
+        }
+
+        .cc .bd {
+            padding: 12px 14px;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px
+        }
+
+        .cc .bd>.row {
+            gap: 6px;
+            justify-content: flex-start !important
+        }
+
+        .cc h3 {
+            font: 700 15px/1.3 var(--fb);
+            color: var(--head);
+            margin: 6px 0 2px !important;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden
+        }
+
+        .cc .bd .m {
+            font-size: 12px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap
+        }
+
+        /* badges */
+        .tag {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 99px;
+            font-size: 11.5px;
+            font-weight: 700;
+            background: #232b36;
+            color: var(--m);
+            border: 1px solid var(--b);
+            line-height: 1.5
+        }
+
+        .tag.green {
+            background: var(--gbg);
+            color: #4ADE80;
+            border-color: rgba(34, 197, 94, .35)
+        }
+
+        .tag.orange {
+            background: var(--obg);
+            color: #FB923C;
+            border-color: rgba(249, 115, 22, .35)
+        }
+
+        .tag.blue {
+            background: var(--rbg);
+            color: #F87171;
+            border-color: rgba(239, 68, 68, .3)
+        }
+
+        .tag.red {
+            background: #4a1d22;
+            color: #FCA5A5;
+            border-color: rgba(239, 68, 68, .55)
+        }
+
+        /* ================= FORMS ================= */
+        .m {
+            color: var(--m);
+            font-size: 13px
+        }
+
+        label {
+            font-weight: 700;
+            font-size: 12.5px;
+            letter-spacing: .02em;
+            display: block;
+            margin: 14px 0 6px;
+            color: var(--lab)
+        }
+
+        input,
+        select,
+        textarea {
+            font: 16px var(--fb);
+            color: var(--t);
+            padding: 12px 14px;
+            min-height: 48px;
+            border: 0;
+            border-bottom: 2px solid #3a4452;
+            border-radius: 14px 14px 6px 6px;
+            background: var(--inp);
+            width: 100%;
+            transition: border-color .2s, background .2s;
+            -webkit-appearance: none;
+            appearance: none
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #78716C
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 0;
+            border-bottom-color: var(--p);
+            background: #131920
+        }
+
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A8A29E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 18px;
+            padding-right: 42px
+        }
+
+        select option {
+            background: var(--s);
+            color: var(--t)
+        }
+
+        input[type=checkbox] {
+            -webkit-appearance: auto;
+            appearance: auto;
+            accent-color: var(--p);
+            min-height: 0;
+            width: 20px !important;
+            height: 20px
+        }
+
+        input:-webkit-autofill {
+            -webkit-text-fill-color: var(--t);
+            box-shadow: 0 0 0 40px var(--inp) inset
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical
+        }
+
+        .btn input {
+            display: none
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 16px;
+            padding: 14px;
+            background: var(--bg2);
+            border-radius: 22px
+        }
+
+        .filters input[type=search],
+        .filters .btn {
+            grid-column: 1/-1
+        }
+
+        .filters input,
+        .filters select {
+            width: 100%;
+            min-width: 0
+        }
+
+        .row:has(>label.btn) {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            margin-top: 2px
+        }
+
+        label.btn {
+            font-size: 14px;
+            letter-spacing: 0;
+            color: var(--t);
+            min-height: 58px;
+            border: 1.5px dashed #3a4452;
+            background: var(--inp);
+            border-radius: 18px;
+            padding: 0 10px
+        }
+
+        .err {
+            background: var(--rbg);
+            color: #FCA5A5;
+            border: 1px solid rgba(239, 68, 68, .3);
+            border-left: 4px solid var(--p);
+            padding: 12px 14px;
+            border-radius: 14px;
+            margin: 12px 0;
+            animation: pop .3s var(--ease)
+        }
+
+        .ok {
+            background: var(--gbg);
+            color: #86EFAC;
+            border: 1px solid rgba(34, 197, 94, .3);
+            border-left: 4px solid var(--g);
+            padding: 12px 14px;
+            border-radius: 14px;
+            margin: 12px 0;
+            animation: pop .3s var(--ease)
+        }
+
+        @keyframes pop {
+            from {
+                opacity: 0;
+                transform: translateY(6px)
+            }
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--m)
+        }
+
+        .empty h3 {
+            margin-bottom: 6px
+        }
+
+        .spin {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #2A323D;
+            border-top-color: var(--p);
+            border-radius: 50%;
+            animation: sp .8s linear infinite;
+            margin: 40px auto
+        }
+
+        @keyframes sp {
+            to {
+                transform: rotate(360deg)
+            }
+        }
+
+        .two {
+            display: grid;
+            gap: 16px;
+            grid-template-columns: 1fr
+        }
+
+        .pv {
+            max-width: 100%;
+            max-height: 240px;
+            border-radius: 16px;
+            margin-top: 10px;
+            border: 1px solid var(--b)
+        }
+
+        #rb {
+            width: 100%;
+            min-height: 52px;
+            font-size: 16px;
+            position: sticky;
+            bottom: calc(var(--nav) + var(--sab) + 10px);
+            z-index: 5;
+            box-shadow: 0 0 0 10px var(--s), 0 6px 16px rgba(239, 68, 68, .28)
+        }
+
+        form.card .btn.pri {
+            width: 100%;
+            min-height: 50px
+        }
+
+        /* tables & bars */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--b);
+            vertical-align: top
+        }
+
+        th {
+            color: var(--m);
+            font-weight: 700;
+            font-size: 11.5px;
+            letter-spacing: .06em;
+            text-transform: uppercase
+        }
+
+        tbody tr:active {
+            background: var(--el)
+        }
+
+        .sc {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch
+        }
+
+        table {
+            min-width: 460px
+        }
+
+        .bar {
+            height: 10px;
+            background: #232b36;
+            border-radius: 9px;
+            overflow: hidden
+        }
+
+        .bar i {
+            display: block;
+            height: 100%;
+            background: var(--g);
+            border-radius: 9px;
+            transform-origin: left;
+            animation: grow .8s var(--ease) both
+        }
+
+        @keyframes grow {
+            from {
+                transform: scaleX(0)
+            }
+        }
+
+        /* snackbar */
+        .toast {
+            position: fixed;
+            left: 12px;
+            right: 12px;
+            bottom: calc(var(--nav) + var(--sab) + 12px);
+            z-index: 50
+        }
+
+        .toast>div {
+            margin: 0;
+            box-shadow: var(--sh2);
+            animation: snack .35s var(--ease);
+            border-radius: 16px
+        }
+
+        @keyframes snack {
+            from {
+                opacity: 0;
+                transform: translateY(14px)
+            }
+        }
+
+        #main>* {
+            animation: up .35s var(--ease) both
+        }
+
+        @keyframes up {
+            from {
+                opacity: 0;
+                transform: translateY(10px)
+            }
+        }
+
+        /* ================= TABLET / DESKTOP ================= */
+        @media(min-width:720px) {
+            aside {
+                inset: 0 auto 0 0;
+                width: 92px;
+                height: auto;
+                padding: 14px 8px;
+                flex-direction: column;
+                gap: 6px;
+                overflow-x: visible;
+                overflow-y: auto;
+                border-top: 0;
+                border-right: 1px solid var(--b);
+                background: var(--side)
+            }
+
+            .logo {
+                display: flex;
+                justify-content: center;
+                font-size: 0;
+                padding: 4px 0 14px
+            }
+
+            .logo span {
+                display: none
+            }
+
+            .logo::before {
+                content: '';
+                width: 46px;
+                height: 46px;
+                border-radius: 15px;
+                background-color: var(--p);
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 18h18M5 18v-5a7 7 0 0 1 14 0v5M12 6v12'/%3E%3C/svg%3E"), linear-gradient(135deg, #EF4444, #DC2626);
+                background-size: 26px, 100%;
+                background-position: center;
+                background-repeat: no-repeat;
+                box-shadow: 0 6px 18px rgba(239, 68, 68, .35)
+            }
+
+            aside a.nav {
+                flex: none;
+                width: 100%;
+                min-height: 68px;
+                font-size: 11px
+            }
+
+            aside a.nav::after {
+                max-width: 56px
+            }
+
+            .wrap {
+                margin-left: 92px
+            }
+
+            header::before {
+                display: none
+            }
+
+            header {
+                padding: 14px 28px;
+                padding-top: calc(14px + var(--sat));
+                flex-wrap: nowrap
+            }
+
+            header h2 {
+                font-size: 21px
+            }
+
+            header #hl,
+            header #hl:has(.dot.bad) {
+                order: 0;
+                flex-basis: auto;
+                font-size: 13px;
+                line-height: 1.4;
+                padding: 6px 14px;
+                border: 1px solid var(--b);
+                border-radius: 99px;
+                background: var(--bg2);
+                color: var(--m);
+                overflow-wrap: normal
+            }
+
+            header #hl:has(.dot.bad) {
+                border-color: rgba(239, 68, 68, .35);
+                color: #FCA5A5
+            }
+
+            header #hl .dot {
+                width: 9px;
+                height: 9px;
+                margin-right: 7px
+            }
+
+            #acct>.m {
+                font-size: 13px;
+                gap: 8px;
+                align-items: center
+            }
+
+            #acct .btn.sm {
+                font-size: 13px;
+                width: auto;
+                height: auto;
+                min-height: 36px;
+                padding: 0 15px;
+                border-radius: 99px
+            }
+
+            #acct .btn.sm::before {
+                display: none
+            }
+
+            main {
+                padding: 28px;
+                padding-bottom: 40px
+            }
+
+            .fab,
+            body:has(.hero) .fab,
+            body:has(#fl) .fab {
+                display: none
+            }
+
+            .toast {
+                left: auto;
+                right: 20px;
+                bottom: 20px;
+                max-width: 360px
+            }
+
+            #rb {
+                position: static;
+                box-shadow: 0 6px 16px rgba(239, 68, 68, .28);
+                width: 100%
+            }
+
+            .hero {
+                padding: 40px;
+                border-radius: 30px
+            }
+
+            .hero .row {
+                display: flex;
+                flex-wrap: wrap
+            }
+
+            .hero .btn.pri {
+                grid-column: auto;
+                min-height: 48px;
+                font-size: 15px
+            }
+
+            .hero .btn:not(.pri) {
+                padding: 0 22px;
+                font-size: 14.5px
+            }
+
+            .stats {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr))
+            }
+
+            .stats>.card:first-child {
+                grid-column: auto
+            }
+
+            .grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 18px
+            }
+
+            .cc {
+                display: block;
+                border-radius: 22px
+            }
+
+            .cc>img,
+            .cc>.ph {
+                width: 100%;
+                height: 170px;
+                min-height: 0
+            }
+
+            .cc .bd {
+                padding: 16px 18px
+            }
+
+            .cc h3 {
+                font-size: 16.5px;
+                margin-top: 10px !important
+            }
+
+            .cc .bd .m {
+                white-space: normal
+            }
+
+            .cc:hover {
+                transform: translateY(-3px);
+                border-color: rgba(239, 68, 68, .5);
+                box-shadow: var(--sh2)
+            }
+
+            .filters {
+                grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
+                align-items: center
+            }
+
+            .filters .btn {
+                grid-column: auto
+            }
+
+            table {
+                min-width: 0
+            }
+
+            form.card .btn.pri,
+            #rb {
+                width: auto;
+                min-width: 200px
+            }
+
+            form.card#rf .btn.pri,
+            #rb {
+                width: 100%
+            }
+        }
+
+        @media(min-width:900px) {
+            .two {
+                grid-template-columns: 1.3fr 1fr;
+                gap: 22px
+            }
+
+            .card {
+                padding: 24px
+            }
+        }
+
+        @media(max-width:380px) {
+            header {
+                padding-left: 10px;
+                padding-right: 10px
+            }
+
+            .hero {
+                padding: 22px 16px
+            }
+
+            .hero .btn:not(.pri) {
+                font-size: 12.5px
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+            * {
+                animation: none !important;
+                transition: none !important
+            }
+        }
+
+        /* ================= SPLASH ================= */
+        #splash {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            background: radial-gradient(circle at 50% 42%, #1C232C 0%, #0B0D10 62%, #000 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 26px;
+            transition: opacity .6s
+        }
+
+        #splash.out {
+            opacity: 0;
+            pointer-events: none
+        }
+
+        #splash h1 {
+            color: var(--head);
+            font: 700 28px var(--fh);
+            letter-spacing: .5px
+        }
+
+        #splash p {
+            color: var(--m);
+            margin: 0;
+            font-family: var(--fb)
+        }
+
+        .ldr {
+            --size: 250px;
+            --duration: 2s;
+            --logo-color: #EF4444;
+            --background: linear-gradient(0deg, rgba(255, 255, 255, .02) 0%, rgba(255, 255, 255, .06) 100%);
+            height: var(--size);
+            max-width: 70vw;
+            aspect-ratio: 1;
+            position: relative
+        }
+
+        .ldr .bx {
+            position: absolute;
+            background: rgba(100, 100, 100, .15);
+            background: var(--background);
+            border-radius: 50%;
+            border-top: 1px solid rgba(239, 68, 68, 1);
+            box-shadow: rgba(0, 0, 0, .5) 0 10px 10px 0;
+            backdrop-filter: blur(5px);
+            animation: ripple var(--duration) infinite ease-in-out !important
+        }
+
+        .ldr .bx:nth-child(1) {
+            inset: 40%;
+            z-index: 99
+        }
+
+        .ldr .bx:nth-child(2) {
+            inset: 30%;
+            z-index: 98;
+            border-color: rgba(239, 68, 68, .75);
+            animation-delay: .2s
+        }
+
+        .ldr .bx:nth-child(3) {
+            inset: 20%;
+            z-index: 97;
+            border-color: rgba(249, 115, 22, .55);
+            animation-delay: .4s
+        }
+
+        .ldr .bx:nth-child(4) {
+            inset: 10%;
+            z-index: 96;
+            border-color: rgba(249, 115, 22, .35);
+            animation-delay: .6s
+        }
+
+        .ldr .bx:nth-child(5) {
+            inset: 0;
+            z-index: 95;
+            border-color: rgba(249, 115, 22, .18);
+            animation-delay: .8s
+        }
+
+        .ldr .lg {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            place-content: center;
+            padding: 30%
+        }
+
+        .ldr .lg svg {
+            fill: var(--logo-color);
+            width: 100%;
+            animation: cc var(--duration) infinite ease-in-out !important
+        }
+
+        @keyframes ripple {
+            0% {
+                transform: scale(1);
+                box-shadow: rgba(0, 0, 0, .5) 0 10px 10px 0
+            }
+
+            50% {
+                transform: scale(1.25);
+                box-shadow: rgba(0, 0, 0, .5) 0 30px 20px 0
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: rgba(0, 0, 0, .5) 0 10px 10px 0
+            }
+        }
+
+        @keyframes cc {
+            0% {
+                fill: var(--logo-color)
+            }
+
+            50% {
+                fill: #F97316
+            }
+
+            100% {
+                fill: var(--logo-color)
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="splash" role="status" aria-label="तक्रार लोड होत आहे">
+        <div class="ldr">
+            <div class="bx">
+                <div class="lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 94 94">
+                        <path
+                            d="M38.0481 4.82927C38.0481 2.16214 40.018 0 42.4481 0H51.2391C53.6692 0 55.6391 2.16214 55.6391 4.82927V40.1401C55.6391 48.8912 53.2343 55.6657 48.4248 60.4636C43.6153 65.2277 36.7304 67.6098 27.7701 67.6098C18.8099 67.6098 11.925 65.2953 7.11548 60.6663C2.37183 56.0036 3.8147e-06 49.2967 3.8147e-06 40.5456V4.82927C3.8147e-06 2.16213 1.96995 0 4.4 0H13.2405C15.6705 0 17.6405 2.16214 17.6405 4.82927V39.1265C17.6405 43.7892 18.4805 47.2018 20.1605 49.3642C21.8735 51.5267 24.4759 52.6079 27.9678 52.6079C31.4596 52.6079 34.0127 51.5436 35.6268 49.4149C37.241 47.2863 38.0481 43.8399 38.0481 39.0758V4.82927Z" />
+                        <path
+                            d="M86.9 61.8682C86.9 64.5353 84.9301 66.6975 82.5 66.6975H73.6595C71.2295 66.6975 69.2595 64.5353 69.2595 61.8682V4.82927C69.2595 2.16214 71.2295 0 73.6595 0H82.5C84.9301 0 86.9 2.16214 86.9 4.82927V61.8682Z" />
+                        <path
+                            d="M2.86102e-06 83.2195C2.86102e-06 80.5524 1.96995 78.3902 4.4 78.3902H83.6C86.0301 78.3902 88 80.5524 88 83.2195V89.1707C88 91.8379 86.0301 94 83.6 94H4.4C1.96995 94 0 91.8379 0 89.1707L2.86102e-06 83.2195Z" />
+                    </svg></div>
+            </div>
+            <div class="bx"></div>
+            <div class="bx"></div>
+            <div class="bx"></div>
+            <div class="bx"></div>
+        </div>
+        <h1 lang="mr">तक्रार</h1>
+        <p>Aapka shehar, aapki awaaz</p>
+    </div>
+    <aside id="side">
+        <div class="logo">Nagar<span>Setu</span></div>
+        <nav id="nav" style="display:contents"></nav>
+    </aside>
+    <div class="wrap">
+        <header><button class="btn burger" onclick="side.classList.toggle('open')" aria-label="Menu">☰</button>
+            <h2 id="ttl"></h2>
+            <span class="m" id="hl"><i class="dot"></i>Checking…</span><button class="btn sm" onclick="refresh()"
+                aria-label="Refresh" title="Refresh">Refresh</button><span id="acct"></span>
+        </header>
+        <main id="main"></main>
+    </div><a class="fab" href="#/report" aria-label="Report an Issue">Report</a>
+    <div class="toast" id="toast"></div>
+    <script>
+        const BASE = 'https://0b01eed4-02dd-40af-b11c-824b200752a9-00-2y42f0udwxt7f.kirk.replit.dev';
+        const $ = s => document.querySelector(s);
+        const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        let S = { wards: [], feed: [], auth: JSON.parse(sessionStorage.getItem('ns_auth') || 'null'), f: {}, q: '', files: {}, busy: {} };
+        /* ---------- API helper ---------- */
+        async function api(path, { method = 'GET', json, form, auth = false, query } = {}) {
+            let url = BASE + path; if (query) { const p = new URLSearchParams(); Object.entries(query).forEach(([k, v]) => v && p.append(k, v)); if ([...p].length) url += '?' + p }
+            const h = { Accept: 'application/json' }, o = { method, headers: h };
+            if (auth && S.auth) h.Authorization = 'Bearer ' + S.auth.token;
+            if (json !== undefined) { h['Content-Type'] = 'application/json'; o.body = JSON.stringify(json) }
+            if (form) o.body = form; // no Content-Type: browser sets multipart boundary
+            const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), 30000); o.signal = ctl.signal;
+            let r; try { r = await fetch(url, o) } catch (e) { throw { msg: e.name === 'AbortError' ? 'Request timed out.' : 'Cannot reach the server (network or CORS error).', status: 0 } } finally { clearTimeout(to) }
+            const txt = await r.text(); let d = txt; try { d = txt ? JSON.parse(txt) : null } catch { }
+            if (!r.ok) {
+                if (r.status === 401 && auth) { clearAuth(); toast('Session expired. Please log in again.', 'err'); location.hash = '#/login' }
+                throw { msg: errMsg(d) || ('Request failed (' + r.status + ')'), status: r.status }
+            }
+            return d
+        }
+        function errMsg(d) {
+            if (!d) return ''; if (typeof d === 'string') return d.slice(0, 300); const x = d.detail ?? d.message ?? d.error;
+            if (Array.isArray(x)) return x.map(e => (e.loc ? e.loc.slice(1).join('.') + ': ' : '') + (e.msg || JSON.stringify(e))).join('; ');
+            return typeof x === 'string' ? x : x ? JSON.stringify(x) : ''
+        }
+        /* ---------- helpers ---------- */
+        const list = d => Array.isArray(d) ? d : (d && (d.complaints || d.items || d.data || d.results || d.wards || d.users)) || [];
+        const cid = c => c.id ?? c.complaint_id;
+        const wid = w => w && typeof w === 'object' ? (w.id ?? w.ward_id ?? w.wardId ?? w._id ?? w.code ?? w.name ?? '') : w;
+        const wlab = w => w && typeof w === 'object' ? (w.name ?? w.ward_name ?? w.title ?? wid(w)) : w;
+        const wname = c => c.ward_name || (c.ward && c.ward.name) || (S.wards.find(w => String(wid(w)) === String(c.ward_id)) ? wlab(S.wards.find(w => String(wid(w)) === String(c.ward_id))) : '') || c.ward_id || '';
+        const img = p => { if (!p) return ''; p = String(p).trim().replace(/\\/g, '/'); if (/^https?:|^data:/.test(p)) return p; p = p.replace(/^\.?\/+/, ''); if (!p.startsWith('uploads/') && p.includes('/')) p = p.split('/').pop(); return BASE + '/' + (p.startsWith('uploads/') ? p : 'uploads/' + p) };
+        const pv = v => { if (!v) return ''; if (Array.isArray(v)) return pv(v[0]); if (typeof v === 'object') return v.url || v.path || v.filename || v.file_name || ''; return typeof v === 'string' ? v : '' };
+        const findImg = (c, res) => { for (const [k, v] of Object.entries(c || {})) { const isRes = /resol|after|proof/i.test(k); if (res !== isRes || !/image|photo|picture|file|attach|media|img/i.test(k)) continue; const s = pv(v); if (s) return img(s) } return '' };
+        const imgOf = c => findImg(c, false) || findImg(c.complaint, false);
+        const resImg = c => findImg(c, true);
+        const cls = s => { s = String(s || '').toLowerCase(); return /resolv|closed|complete/.test(s) ? 'green' : /progress|assign/.test(s) ? 'blue' : /pend|open|new/.test(s) ? 'orange' : /reject|urgent|high/.test(s) ? 'red' : '' };
+        const tag = v => v ? `<span class="tag ${cls(v)}">${esc(v)}</span>` : '';
+        const im = (u, h) => u ? `<img src="${esc(u)}" alt="" loading="lazy" ${h ? `style="height:${h}px"` : ''} onerror="this.outerHTML='<div class=ph style=display:grid;place-items:center;color:#9a9ab5>No image</div>'">` : `<div class="ph" style="display:grid;place-items:center;color:#9a9ab5">No image</div>`;
+        const fmtD = v => { const d = new Date(v); return isNaN(d) ? esc(v) : d.toLocaleString() };
+        function toast(m, t = 'ok') { const e = $('#toast'); e.innerHTML = `<div class="${t}">${esc(m)}</div>`; setTimeout(() => e.innerHTML = '', 4500) }
+        const spin = '<div class="spin" role="status" aria-label="Loading"></div>';
+        const role = () => S.auth && S.auth.role;
+        function saveAuth(a) { S.auth = a; sessionStorage.setItem('ns_auth', JSON.stringify(a)) }
+        function clearAuth() { S.auth = null; sessionStorage.removeItem('ns_auth'); drawChrome() }
+        async function loadWards() { try { S.wards = list(await api('/public/wards')) } catch (e) { S.wards = [] } }
+        const wardOpts = (sel, ph = 'Select ward') => `<option value="">${ph}</option>` + S.wards.map(w => `<option value="${esc(wid(w))}" ${String(wid(w)) === String(sel) ? 'selected' : ''}>${esc(wlab(w))}</option>`).join('');
+        const uniq = (a, k) => [...new Set(a.map(k).filter(Boolean))];
+        /* ---------- chrome ---------- */
+        function drawChrome() {
+            const r = role(), h = location.hash || '#/';
+            const L = [['#/', 'Overview'], ['#/feed', 'Public Complaints'], ['#/report', 'Report an Issue'], ['#/performance', 'Ward Performance']];
+            if (r) L.push(['#/official', r === 'ADMIN' ? 'Official Dashboard' : 'My Dashboard']); if (r === 'ADMIN') L.push(['#/admin', 'Administration']);
+            if (!r) L.push(['#/login', 'Official Login']);
+            $('#nav').innerHTML = L.map(([a, t]) => `<a class="nav ${h === a ? 'on' : ''}" href="${a}" onclick="side.classList.remove('open')">${t}</a>`).join('');
+            $('#acct').innerHTML = r ? `<span class="m">${esc(S.auth.name || '')} <span class="tag">${esc(r)}</span></span> <button class="btn sm" onclick="logout()">Log out</button>` : ''
+        }
+        async function health() { try { await api('/health'); $('#hl').innerHTML = '<i class="dot ok"></i>API connected' } catch (e) { $('#hl').innerHTML = `<i class="dot bad"></i>API error: ${esc(e.msg)}` } }
+        async function logout() { try { await api('/logout', { method: 'POST', auth: true }) } catch (e) { if (e.status !== 401) toast('Server logout failed: ' + e.msg + '. Local session cleared.', 'err') } clearAuth(); location.hash = '#/'; toast('Logged out.') }
+        /* ---------- router ---------- */
+        const R = [[/^#\/feed$/, 'Public Complaints', feed], [/^#\/report$/, 'Report an Issue', report], [/^#\/performance$/, 'Ward Performance', perf], [/^#\/login$/, 'Official Login', login],
+        [/^#\/official$/, 'Official Dashboard', official], [/^#\/admin$/, 'Administration', admin], [/^#\/c\/(.+)$/, 'Complaint Details', m => detail(m[1], false)], [/^#\/o\/(.+)$/, 'Complaint Details', m => detail(m[1], true)]];
+        async function go() {
+            const h = location.hash || '#/'; drawChrome(); let hit = null; for (const [re, t, fn] of R) { const m = h.match(re); if (m) { hit = [t, () => fn(m)]; break } }
+            $('#ttl').textContent = hit ? hit[0] : 'Overview'; $('#main').innerHTML = spin; scrollTo(0, 0);
+            try { await (hit ? hit[1]() : home()) } catch (e) { $('#main').innerHTML = `<div class="err">${esc(e.msg || e.message)}</div>` }
+        }
+        const refresh = () => { health(); go() }; addEventListener('hashchange', go);
+        const denied = (m = 'This section needs an authenticated official with the right role.') => `<div class="card empty"><h3>Access restricted</h3><p>${m}</p><a class="btn pri" href="#/login">Official login</a></div>`;
+        /* ---------- complaint card ---------- */
+        const cardC = (c, off) => `<article class="card cc" tabindex="0" onclick="location.hash='#/${off ? 'o' : 'c'}/'+encodeURIComponent('${esc(cid(c))}')" onkeydown="if(event.key==='Enter')this.click()">${im(imgOf(c))}<div class="bd"><div class="row" style="justify-content:space-between">${tag(c.status)}${tag(c.priority)}</div><h3 style="margin-top:8px">${esc(c.title || 'Untitled')}</h3><div class="m">${esc(c.category || '')}${wname(c) ? ' · ' + esc(wname(c)) : ''}</div><div class="m">${esc(c.address || '')}</div><div class="m">ID: ${esc(cid(c))}</div></div></article>`;
+        /* ---------- home ---------- */
+        async function home() {
+            await loadWards(); let d = null, err = ''; try { d = list(await api('/public/complaints')) } catch (e) { err = e.msg }
+            const n = k => d ? d.filter(c => cls(c.status) === k).length : 0;
+            $('#main').innerHTML = `<section class="hero"><h1>See a civic problem? Report it with a photo.</h1><p>NagarSetu sends your complaint to your ward and lets everyone follow its progress. No login needed.</p><div class="row"><a class="btn pri" href="#/report">Report an Issue</a><a class="btn" style="background:rgba(255,255,255,.18);color:#fff" href="#/feed">View Public Complaints</a><a class="btn" style="background:rgba(255,255,255,.18);color:#fff" href="#/performance">Ward performance</a></div></section>
+ ${err ? `<div class="err">Could not load complaints: ${esc(err)}</div>` : `<p class="m" style="margin-top:0">Counts below are calculated in your browser from the public feed, not supplied by the backend.</p><div class="stats"><div class="card stat"><b>${d.length}</b><small>In public feed</small></div><div class="card stat"><b style="color:var(--o)">${n('orange')}</b><small>Pending</small></div><div class="card stat"><b style="color:var(--bl)">${n('blue')}</b><small>In progress</small></div><div class="card stat"><b style="color:var(--g)">${n('green')}</b><small>Resolved</small></div><div class="card stat"><b>${S.wards.length}</b><small>Wards listed</small></div></div>
+ <h3 style="margin:8px 0 14px">Recent complaints</h3>${d.length ? `<div class="grid">${d.slice(0, 6).map(c => cardC(c)).join('')}</div>` : '<div class="card empty">No complaints yet. Be the first to report one.</div>'}`}`
+        }
+        /* ---------- feed ---------- */
+        async function feed() {
+            await loadWards(); $('#main').innerHTML = `<div class="card filters"><input id="q" type="search" placeholder="Search title, description, category, address" value="${esc(S.q)}" aria-label="Search">
+ <select id="fw">${wardOpts(S.f.ward_id, 'All wards')}</select><select id="fs"><option value="">All statuses</option>${['Pending', 'In Progress', 'Resolved', 'Rejected'].map(x => `<option ${S.f.status === x ? 'selected' : ''}>${x}</option>`).join('')}</select>
+ <input id="fc" placeholder="Category" value="${esc(S.f.category || '')}" aria-label="Category"><select id="fp"><option value="">All priorities</option>${['Low', 'Medium', 'High'].map(x => `<option ${S.f.priority === x ? 'selected' : ''}>${x}</option>`).join('')}</select>
+ <button class="btn" onclick="S.f={};S.q='';feed()">Clear filters</button></div><div id="fl">${spin}</div>`;
+            const apply = () => { S.f = { ward_id: $('#fw').value, status: $('#fs').value, category: $('#fc').value.trim(), priority: $('#fp').value }; fetchFeed() };
+            ['fw', 'fs', 'fp'].forEach(i => $('#' + i).onchange = apply); $('#fc').onchange = apply; $('#q').oninput = e => { S.q = e.target.value; drawFeed() }; fetchFeed()
+        }
+        async function fetchFeed() { $('#fl').innerHTML = spin; try { S.feed = list(await api('/public/complaints', { query: S.f })); drawFeed() } catch (e) { $('#fl').innerHTML = `<div class="err">Could not load complaints: ${esc(e.msg)} <button class="btn sm" onclick="fetchFeed()">Retry</button></div>` } }
+        function drawFeed() {
+            const q = S.q.toLowerCase(), d = S.feed.filter(c => !q || [c.title, c.description, c.category, c.address].some(x => String(x || '').toLowerCase().includes(q)));
+            $('#fl').innerHTML = `<p class="m">${d.length} complaint${d.length === 1 ? '' : 's'} shown</p>` + (d.length ? `<div class="grid">${d.map(c => cardC(c)).join('')}</div>` : '<div class="card empty">No complaints match these filters.</div>')
+        }
+        /* ---------- image picking ---------- */
+        const OK = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'], MAX = 8 * 1024 * 1024;
+        function pick(key, input, box) {
+            const f = input.files[0]; if (!f) return; const e = $('#' + box + 'e'); e.textContent = '';
+            if (!OK.includes(f.type)) { e.textContent = 'Choose a JPG, PNG, WebP or GIF image.'; input.value = ''; return }
+            if (f.size > MAX) { e.textContent = 'Image must be 8 MB or smaller.'; input.value = ''; return }
+            S.files[key] = f; $('#' + box).innerHTML = `<img class="pv" src="${URL.createObjectURL(f)}" alt="Preview"><div><button type="button" class="btn sm" onclick="unpick('${key}','${box}')">Remove photo</button></div>`
+        }
+        function unpick(k, b) { delete S.files[k]; $('#' + b).innerHTML = ''; document.querySelectorAll('input[type=file]').forEach(i => i.value = '') }
+        const picker = (key, box) => `<div class="row"><label class="btn" style="margin:0;cursor:pointer">Choose photo<input type="file" accept="image/*" hidden onchange="pick('${key}',this,'${box}')"></label>
+ <label class="btn" style="margin:0;cursor:pointer">Take photo<input type="file" accept="image/*" capture="environment" hidden onchange="pick('${key}',this,'${box}')"></label></div><div class="err" id="${box}e" style="display:none"></div><div id="${box}"></div>`;
+        new MutationObserver(() => document.querySelectorAll('.err[id$=e]').forEach(e => e.style.display = e.textContent ? 'block' : 'none')).observe(document.body, { subtree: true, childList: true, characterData: true });
+        /* ---------- report ---------- */
+        async function report() {
+            await loadWards(); S.files.report = null; delete S.files.report;
+            $('#main').innerHTML = `<div class="two"><form class="card" id="rf" novalidate><h3>Describe the problem</h3>
+ <label for="t">Title</label><input id="t" required maxlength="150"><label for="d">Description</label><textarea id="d" rows="4" required></textarea>
+ <label for="c">Category</label><input id="c" list="cats" required placeholder="e.g. Roads, Water, Garbage"><datalist id="cats">${uniq(S.feed, c => c.category).map(x => `<option value="${esc(x)}">`).join('')}</datalist>
+ <label for="a">Address / landmark</label><input id="a" required><label for="w">Ward</label><select id="w" required>${wardOpts('')}</select>
+ <label>Photograph (required)</label>${picker('report', 'rp')}<div id="rmsg"></div><button class="btn pri" style="margin-top:16px;width:100%" id="rb">Submit complaint</button></form>
+ <div class="card"><h3>Tips</h3><p class="m">Take a clear photo that shows the problem and its surroundings. Add a nearby landmark so officials can find the spot. Your complaint will appear in the public feed after the backend accepts it.</p>${S.wards.length ? '' : '<div class="err">Wards could not be loaded, so a complaint cannot be submitted right now.</div>'}</div></div>`;
+            $('#rf').onsubmit = async ev => {
+                ev.preventDefault(); if (S.busy.r) return; const v = k => $('#' + k).value.trim(), m = $('#rmsg'), miss = [];
+                [['t', 'Title'], ['d', 'Description'], ['c', 'Category'], ['a', 'Address'], ['w', 'Ward']].forEach(([k, n]) => { if (!v(k)) miss.push(n) }); if (!S.files.report) miss.push('Photograph');
+                if (miss.length) { m.innerHTML = `<div class="err">Please provide: ${miss.join(', ')}.</div>`; return }
+                const fd = new FormData(); fd.append('title', v('t')); fd.append('description', v('d')); fd.append('category', v('c')); fd.append('address', v('a')); fd.append('ward_id', $('#w').value); fd.append('image', S.files.report);
+                S.busy.r = 1; $('#rb').disabled = true; $('#rb').textContent = 'Submitting…'; m.innerHTML = '';
+                try {
+                    const r = await api('/public/complaints', { method: 'POST', form: fd }); const id = r && (r.id ?? r.complaint_id ?? (r.complaint && r.complaint.id));
+                    $('#rf').reset(); unpick('report', 'rp'); m.innerHTML = `<div class="ok">The backend accepted your complaint${id ? ` (ID ${esc(id)})` : ''}. <a href="${id ? '#/c/' + encodeURIComponent(id) : '#/feed'}">${id ? 'View it' : 'See the feed'}</a></div>`; S.feed = []
+                }
+                catch (e) { m.innerHTML = `<div class="err">${esc(e.msg)}</div>` } finally { S.busy.r = 0; $('#rb').disabled = false; $('#rb').textContent = 'Submit complaint' }
+            }
+        }
+        /* ---------- generic data renderer (schema-agnostic) ---------- */
+        const lbl = k => esc(String(k).replace(/_/g, ' ').replace(/^./, c => c.toUpperCase()));
+        function gen(d, depth = 0) {
+            if (d == null) return '<p class="m">No data.</p>';
+            if (Array.isArray(d)) {
+                if (!d.length) return '<p class="m">No records.</p>'; if (typeof d[0] !== 'object') return d.map(x => `<span class="tag">${esc(x)}</span>`).join(' ');
+                const ks = [...new Set(d.flatMap(o => Object.keys(o)))].filter(k => !/password|token/i.test(k) && d.every(o => typeof o[k] !== 'object' || o[k] == null)).slice(0, 9);
+                return `<div class="sc"><table><thead><tr>${ks.map(k => `<th>${lbl(k)}</th>`).join('')}</tr></thead><tbody>${d.map(o => `<tr>${ks.map(k => `<td>${/status|priority/.test(k) ? tag(o[k]) : esc(o[k])}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`
+            }
+            if (typeof d !== 'object') return esc(d); const sc = Object.entries(d).filter(([k, v]) => typeof v !== 'object' || v == null), ob = Object.entries(d).filter(([k, v]) => v && typeof v === 'object');
+            return (sc.length ? `<div class="stats">${sc.map(([k, v]) => `<div class="card stat"><b>${esc(typeof v === 'number' && /rate|percent/i.test(k) && v <= 1 ? (v * 100).toFixed(1) + '%' : v)}</b><small>${lbl(k)}</small></div>`).join('')}</div>` : '') + ob.map(([k, v]) => `<div class="card" style="margin-bottom:16px"><h3 style="margin-bottom:10px">${lbl(k)}</h3>${gen(v, depth + 1)}</div>`).join('')
+        }
+        async function perf() {
+            const d = await api('/public/performance'); const r = d && !Array.isArray(d) && Object.keys(d).length === 1 && typeof Object.values(d)[0] === 'object' ? Object.values(d)[0] : d;
+            const rows = Array.isArray(r) ? r : null; let bars = '';
+            if (rows && rows.length && typeof rows[0] === 'object') {
+                const rk = Object.keys(rows[0]).find(k => /resolved/i.test(k) && typeof rows[0][k] === 'number'), tk = Object.keys(rows[0]).find(k => /total/i.test(k) && typeof rows[0][k] === 'number'), nk = Object.keys(rows[0]).find(k => /name/i.test(k));
+                if (rk && tk) bars = `<div class="card" style="margin-bottom:16px"><h3>Resolved share by ward</h3>${rows.map(o => { const p = o[tk] ? Math.round(o[rk] / o[tk] * 100) : 0; return `<div style="margin:12px 0"><div class="row" style="justify-content:space-between"><b>${esc(o[nk] || '')}</b><span class="m">${o[rk]} of ${o[tk]} (${p}%)</span></div><div class="bar"><i style="width:${p}%"></i></div></div>` }).join('')}</div>`
+            }
+            $('#main').innerHTML = (!d || (Array.isArray(r) && !r.length) ? '<div class="card empty">The backend returned no performance data yet.</div>' : bars + gen(r))
+        }
+        /* ---------- login ---------- */
+        function login() {
+            if (S.auth) { location.hash = '#/official'; return }
+            $('#main').innerHTML = `<form class="card" id="lf" style="max-width:420px;margin:30px auto" novalidate><h3>Official login</h3><p class="m">For ward and administration officials. Citizens do not need an account.</p><label for="u">Username</label><input id="u" autocomplete="username"><label for="p">Password</label><input id="p" type="password" autocomplete="current-password"><div id="lm"></div><button class="btn pri" id="lb" style="width:100%;margin-top:14px">Log in</button></form>`;
+            $('#lf').onsubmit = async e => {
+                e.preventDefault(); if (S.busy.l) return; const u = $('#u').value.trim(), p = $('#p').value; if (!u || !p) { $('#lm').innerHTML = '<div class="err">Enter both username and password.</div>'; return }
+                S.busy.l = 1; $('#lb').disabled = true; $('#lb').textContent = 'Logging in…';
+                try {
+                    const r = await api('/login', { method: 'POST', json: { username: u, password: p } }); const tok = r && (r.access_token || r.token || r.session_token || (r.data && r.data.token)), usr = (r && r.user) || r || {}, ro = String(usr.role || r.role || '').toUpperCase();
+                    if (!tok || !ro) throw { msg: 'Login response did not include a token and role. Keys received: ' + Object.keys(r || {}).join(', ') };
+                    saveAuth({ token: tok, role: ro, name: usr.name || usr.username || u, ward_id: usr.ward_id }); location.hash = ro === 'ADMIN' ? '#/admin' : '#/official'
+                }
+                catch (e) { $('#lm').innerHTML = `<div class="err">${esc(e.msg)}</div>`; S.busy.l = 0; $('#lb').disabled = false; $('#lb').textContent = 'Log in' } finally { S.busy.l = 0 }
+            }
+        }
+        /* ---------- official ---------- */
+        const DASH = { NAGARADHYAKSH: '/dashboard/nagaradhyaksh', MLA: '/dashboard/mla', MP: '/dashboard/mp' };
+        async function official() {
+            const r = role(); if (!r) { $('#main').innerHTML = denied(); return }
+            if (r === 'CORPORATOR') {
+                const d = list(await api('/corporator/complaints', { auth: true })); S.off = d;
+                $('#main').innerHTML = `<div class="card filters"><select id="os" onchange="offF()"><option value="">All statuses</option>${uniq(d, c => c.status).map(x => `<option>${esc(x)}</option>`).join('')}</select><input id="oq" type="search" placeholder="Search" oninput="offF()"></div><div id="ol"></div>`; offF()
+            }
+            else if (DASH[r]) { const d = await api(DASH[r], { auth: true }); $('#main').innerHTML = (d && Object.keys(d).length ? gen(d) : '<div class="card empty">The dashboard returned no data.</div>') }
+            else if (r === 'ADMIN') { location.hash = '#/admin' } else $('#main').innerHTML = denied('No dashboard is defined for this role.')
+        }
+        function offF() {
+            const s = $('#os').value, q = $('#oq').value.toLowerCase(), d = S.off.filter(c => (!s || c.status === s) && (!q || JSON.stringify(c).toLowerCase().includes(q)));
+            $('#ol').innerHTML = `<p class="m">${d.length} assigned complaint${d.length === 1 ? '' : 's'}</p>` + (d.length ? `<div class="grid">${d.map(c => cardC(c, 1)).join('')}</div>` : '<div class="card empty">No complaints assigned to you match.</div>')
+        }
+        /* ---------- detail ---------- */
+        async function detail(id, off) {
+            let c;
+            if (off) { if (role() !== 'CORPORATOR') { $('#main').innerHTML = denied(); return } c = await api('/corporator/complaints/' + encodeURIComponent(id), { auth: true }) } else c = await api('/public/complaints/' + encodeURIComponent(id));
+            c = c.complaint || c; await loadWards(); const rem = c.remark || c.remarks || c.resolution_details || c.resolution, ri = resImg(c), done = /resolv/i.test(c.status || '');
+            const row = (k, v) => v ? `<tr><th style="width:140px">${k}</th><td>${v}</td></tr>` : '';
+            $('#main').innerHTML = `<p><a href="${off ? '#/official' : '#/feed'}">← Back</a></p><div class="two"><div><div class="card" style="padding:0;overflow:hidden">${im(imgOf(c), 320)}<div style="padding:20px"><div class="row">${tag(c.status)}${tag(c.priority)}</div><h2 style="margin:10px 0">${esc(c.title)}</h2><p>${esc(c.description)}</p>
+ <table>${row('ID', esc(cid(c)))}${row('Category', esc(c.category))}${row('Address', esc(c.address))}${row('Ward', esc(wname(c)))}${row('Submitted', c.created_at || c.submitted_at ? fmtD(c.created_at || c.submitted_at) : '')}${row('Remarks', esc(rem))}</table></div></div>
+ ${ri ? `<div class="card" style="margin-top:16px"><h3>Resolution photo</h3>${im(ri, 300)}</div>` : ''}</div>
+ ${off ? `<div>${done ? '<div class="card ok">This complaint is resolved.</div>' : `<form class="card" id="uf"><h3>Update complaint</h3><label>Status</label><select id="us">${[...new Set([c.status, 'Pending', 'In Progress', 'Rejected'].filter(x => x && !/resolv/i.test(x)))].map(x => `<option ${x === c.status ? 'selected' : ''}>${esc(x)}</option>`).join('')}</select><label>Priority</label><select id="up">${[...new Set([c.priority, 'Low', 'Medium', 'High'].filter(Boolean))].map(x => `<option ${x === c.priority ? 'selected' : ''}>${esc(x)}</option>`).join('')}</select><label>Remark</label><textarea id="ur" rows="3">${esc(c.remark || c.remarks || '')}</textarea><div id="um"></div><button class="btn pri" id="ub" style="margin-top:12px">Save update</button></form>
+ <form class="card" id="rsf" style="margin-top:16px"><h3>Resolve complaint</h3><label>Resolution details</label><textarea id="rd" rows="3"></textarea><label>Resolution photo (required)</label>${picker('res', 'rsp')}<div id="rm"></div><button class="btn pri" id="rb2" style="margin-top:12px">Submit resolution</button></form>`}</div>` : ''}</div>`;
+            if (off && !done) {
+                S.files.res && delete S.files.res;
+                $('#uf').onsubmit = async e => {
+                    e.preventDefault(); if (S.busy.u) return; S.busy.u = 1; $('#ub').disabled = true; $('#ub').textContent = 'Saving…';
+                    try { await api('/corporator/complaints/' + encodeURIComponent(id), { method: 'PUT', auth: true, json: { status: $('#us').value, priority: $('#up').value, remark: $('#ur').value.trim() } }); toast('Update saved by the backend.'); S.busy.u = 0; detail(id, true) }
+                    catch (x) { $('#um').innerHTML = `<div class="err">${esc(x.msg)}</div>`; S.busy.u = 0; $('#ub').disabled = false; $('#ub').textContent = 'Save update' }
+                };
+                $('#rsf').onsubmit = async e => {
+                    e.preventDefault(); if (S.busy.s) return; const t = $('#rd').value.trim(); if (!t || !S.files.res) { $('#rm').innerHTML = '<div class="err">Resolution details and a photo are both required.</div>'; return }
+                    const fd = new FormData(); fd.append('resolution_details', t); fd.append('resolution_image', S.files.res); S.busy.s = 1; $('#rb2').disabled = true; $('#rb2').textContent = 'Submitting…';
+                    try { await api('/corporator/complaints/' + encodeURIComponent(id) + '/resolve', { method: 'POST', auth: true, form: fd }); toast('Resolution accepted by the backend.'); S.busy.s = 0; detail(id, true) }
+                    catch (x) { $('#rm').innerHTML = `<div class="err">${esc(x.msg)}</div>`; S.busy.s = 0; $('#rb2').disabled = false; $('#rb2').textContent = 'Submit resolution' }
+                }
+            }
+        }
+        /* ---------- admin ---------- */
+        async function admin(tab) {
+            if (role() !== 'ADMIN') { $('#main').innerHTML = denied('Administration is available to the ADMIN role only.'); return }
+            tab = tab || S.tab || 'users'; S.tab = tab; const T = [['users', 'Officials'], ['wards', 'Wards'], ['complaints', 'All complaints']];
+            $('#main').innerHTML = `<div class="tabs">${T.map(([k, n]) => `<button class="btn ${k === tab ? 'on' : ''}" onclick="admin('${k}')">${n}</button>`).join('')}</div><div id="ab">${spin}</div>`;
+            try {
+                if (tab === 'users') {
+                    const u = list(await api('/admin/users', { auth: true })); await loadWards();
+                    $('#ab').innerHTML = `<div class="two"><div class="card"><h3 style="margin-bottom:10px">Official accounts</h3>${gen(u)}</div><form class="card" id="nu"><h3>Create official</h3><label>Name</label><input id="nn"><label>Username</label><input id="nun" autocomplete="off"><label>Password</label><input id="np" type="password" autocomplete="new-password"><label>Role</label><select id="nr">${['NAGARADHYAKSH', 'MLA', 'MP', 'CORPORATOR', 'ADMIN'].map(x => `<option>${x}</option>`).join('')}</select><label>Ward (optional)</label><select id="nw">${wardOpts('', 'No ward')}</select><div id="nm"></div><button class="btn pri" id="nb" style="margin-top:12px">Create official</button></form></div>`;
+                    $('#nu').onsubmit = async e => {
+                        e.preventDefault(); if (S.busy.n) return; const b = { username: $('#nun').value.trim(), password: $('#np').value, name: $('#nn').value.trim(), role: $('#nr').value }; if ($('#nw').value) b.ward_id = $('#nw').value;
+                        if (!b.username || !b.password || !b.name) { $('#nm').innerHTML = '<div class="err">Name, username and password are required.</div>'; return }
+                        S.busy.n = 1; $('#nb').disabled = true; try { await api('/admin/users', { method: 'POST', auth: true, json: b }); toast('Official created.'); S.busy.n = 0; admin('users') } catch (x) { $('#nm').innerHTML = `<div class="err">${esc(x.msg)}</div>`; S.busy.n = 0; $('#nb').disabled = false }
+                    }
+                }
+                else if (tab === 'wards') {
+                    const w = list(await api('/admin/wards', { auth: true })); S.aw = w;
+                    $('#ab').innerHTML = `<div class="two"><div class="card"><h3 style="margin-bottom:10px">Wards</h3><div class="sc"><table><thead><tr><th>ID</th><th>Name</th><th>Active</th><th>Corporator ID</th><th></th></tr></thead><tbody>${w.map((x, i) => `<tr><td>${esc(wid(x))}</td><td>${esc(wlab(x))}</td><td>${esc(x.active)}</td><td>${esc(x.corporator_user_id)}</td><td><button class="btn sm" onclick="editW(${i})">Edit</button></td></tr>`).join('')}</tbody></table></div>${w.length ? '' : '<p class="m">No wards yet.</p>'}</div>
+   <form class="card" id="wf"><h3 id="wt">Create ward</h3><label>Name</label><input id="wn"><label>Corporator user ID</label><input id="wc"><label class="row" style="align-items:center" id="wal" hidden><input type="checkbox" id="wa" style="width:auto"> Active</label><div id="wm"></div><button class="btn pri" id="wb" style="margin-top:12px">Create ward</button> <button type="button" class="btn" onclick="admin('wards')">Reset</button></form></div>`; S.ew = null;
+                    $('#wf').onsubmit = async e => {
+                        e.preventDefault(); if (S.busy.w) return; const n = $('#wn').value.trim(), c = $('#wc').value.trim(); if (!n) { $('#wm').innerHTML = '<div class="err">Ward name is required.</div>'; return }
+                        const b = { name: n }; if (c) b.corporator_user_id = c; if (S.ew) b.active = $('#wa').checked; S.busy.w = 1; $('#wb').disabled = true;
+                        try { await api(S.ew ? '/admin/wards/' + encodeURIComponent(S.ew) : '/admin/wards', { method: S.ew ? 'PUT' : 'POST', auth: true, json: b }); toast('Ward saved.'); S.busy.w = 0; admin('wards') } catch (x) { $('#wm').innerHTML = `<div class="err">${esc(x.msg)}</div>`; S.busy.w = 0; $('#wb').disabled = false }
+                    }
+                }
+                else { const c = list(await api('/admin/complaints', { auth: true })); $('#ab').innerHTML = `<p class="m">${c.length} complaints</p>` + (c.length ? `<div class="grid">${c.map(x => cardC(x)).join('')}</div>` : '<div class="card empty">No complaints.</div>') }
+            } catch (e) { $('#ab').innerHTML = `<div class="err">${esc(e.msg || e.message)}</div>` }
+        }
+        function editW(i) { const w = S.aw[i]; S.ew = wid(w); $('#wt').textContent = 'Edit ward ' + wid(w); $('#wn').value = wlab(w) || ''; $('#wc').value = w.corporator_user_id ?? ''; $('#wal').hidden = false; $('#wa').checked = !!w.active; $('#wb').textContent = 'Save ward'; $('#wf').scrollIntoView({ behavior: 'smooth' }) }
+        health(); go();
+        setTimeout(() => { const e = document.getElementById("splash"); e.classList.add("out"); setTimeout(() => e.remove(), 700) }, 4000);
+    </script>
+</body>
+
+</html>
